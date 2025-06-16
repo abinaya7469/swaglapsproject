@@ -3,6 +3,8 @@ import { pagefixture } from "../hooks/pagefixture.js";
 import { Loginlocators } from "../pages/loginPages.js";
 import { expect} from "@playwright/test";
 import dotenv from "dotenv";
+import { tofill } from "../actions/action.js";
+import { RandumNumGenerator } from "../utiles/utils.js";
 dotenv.config();
 
          Given('User Launchs the url', async function () {
@@ -10,8 +12,10 @@ dotenv.config();
          });
 
          When('User enters the username and password', async function () {
-            await pagefixture.page.locator(Loginlocators.username).fill(process.env.Mainusername)
-            await pagefixture.page.locator(Loginlocators.password).fill(process.env.Mainpassword)
+         await tofill(Loginlocators.username,process.env.Mainusername);
+         await tofill(Loginlocators.password,RandumNumGenerator);
+            // await pagefixture.page.locator(Loginlocators.username).fill(process.env.Mainusername)
+            // await pagefixture.page.locator(Loginlocators.password).fill(process.env.Mainpassword)
          });
 
 

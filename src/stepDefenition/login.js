@@ -3,26 +3,39 @@ import { pagefixture } from "../hooks/pagefixture.js";
 import { Loginlocators } from "../pages/loginPages.js";
 import { expect} from "@playwright/test";
 import dotenv from "dotenv";
-import { tofill } from "../actions/action.js";
+import { tofill,dropdown } from "../actions/action.js";
 import { RandumNumGenerator } from "../utiles/utils.js";
 dotenv.config();
+
 
          Given('User Launchs the url', async function () {
            await pagefixture.page.goto(Loginlocators.url);
          });
 
          When('User enters the username and password', async function () {
-         await tofill(Loginlocators.username,process.env.Mainusername);
-         await tofill(Loginlocators.password,RandumNumGenerator);
-            // await pagefixture.page.locator(Loginlocators.username).fill(process.env.Mainusername)
-            // await pagefixture.page.locator(Loginlocators.password).fill(process.env.Mainpassword)
+        //  await tofill(Loginlocators.username,process.env.Mainusername);
+        //  await tofill(Loginlocators.password,RandumNumGenerator);
+            await pagefixture.page.focus(Loginlocators.username)
+            //await pagefixture.page.waitForTimeout(50000)
+            await pagefixture.page.locator(Loginlocators.username).fill(process.env.Mainusername)
+            await pagefixture.page.locator(Loginlocators.password).fill(process.env.Mainpassword)
          });
 
 
 
          When('User clicks the Login button', async function () {
             await pagefixture.page.click(Loginlocators.loginbutton)
+            // const title=await pagefixture.page.title();
+            // console.log(title)
          });
+
+         When ('user selects the dropdown button',async function () {
+          await dropdown(Loginlocators.dropdownlocator,{label:"Price (high to low)"})
+          await pagefixture.page.focus(Loginlocators.dropdownlocator)
+          await expect(await pagefixture.page.locator(Loginlocators.dropdownassertion)).getByText('Sauce Labs Fleece Jacket')
+          await pagefixture.page.screenshot({ path: 'C:/Users/asatheeshkumar/Desktop/swaglaps/test-results/homepage.png' });
+          
+         })
 
 
          Then('User verify the home page.', async function () {
